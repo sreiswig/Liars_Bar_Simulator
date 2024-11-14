@@ -57,6 +57,12 @@ class LiarsGame():
     def create_new_round(self):
         random_draw = self.deck.deal(len(self.players))
         for i in range(4):
-            self.players[i] = [(i*4) : (i*4)+4]
-
+            self.players[i] = random_draw[(i*5) : (i*5)+5]
         self.current_player = random.sample(self.players, 1)
+
+    """
+    Turn during each turn a player plays their cards or accuses the previous player
+
+    """
+    def play(self):
+        return
