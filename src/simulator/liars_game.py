@@ -2,7 +2,7 @@
 # Each player is dealt 5 cards from a Deck of 6 Kings, 6 Queens, 6 Jacks, 6 Aces and 2 Jokers
 # A Table value is chosen from the set (King, Queen, Jack, Ace)
 # A player is chosen to go first
-# The player then pick between 1 - 3 cards to place on the table
+# The player then picks between 1 - 3 cards to place on the table
 # The turn is passed to the next player (index + 1) % 4
 # The current player gets to accuse or play
 # If the player chooses to accuse then the last cards played are revealed
@@ -11,25 +11,52 @@
 # Special Conditions:
 # If a player has played all their cards they are skipped
 # If all cards have been played the last player must accuse the previous player
+
 from player import Player
+import random
+
 
 class Card():
     def __init__(self, face):
         self.face = face
 
+
 class LiarsGameDeck():
     def __init__(self):
-        return
+        self.deck = []
+        for i in range(6):
+            self.deck.append(Card("King"))
+            self.deck.append(Card("Queen"))
+            self.deck.append(Card("Jack"))
+            self.deck.append(Card("Ace"))
+            if i < 2:
+                self.deck.append(Card("Joker"))
 
-    def draw(self, num):
-        return
+    def deal(self, num_players):
+        return random.sample(self.deck, num_players * 5)
+
 
 class LiarsGame():
+    """
+    There are 4 players at the beginning of the game.
+    A face is chosen to be the table_face which are the face cards that are safe to play.
+    Faces are from the set of (King, Queen, Jack, Ace)
+    A player is chosen to start the round.
+    """
     def __init__(self, players):
-        self.deck = None
-        self.last_played = []
-        self.current_player = None
+        self.deck = LiarsGameDeck()
         self.players = players
+        self.current_player = None
+        self.table_face = None
+        self.create_new_round()
+    
+    """
+    Creates a new round.
+    New Deal is made.
+    """
+    def create_new_round(self):
+        random_draw = self.deck.deal(len(self.players))
+        for i in range(4):
+            self.players[i] = [(i*4) : (i*4)+4]
 
-    def deal(self):
-        return
+        self.current_player = random.sample(self.players, 1)
