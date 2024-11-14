@@ -1,4 +1,11 @@
-# The player class keeps track of their view of the game and the algorithm for playing
+import random
+
 class Player():
     def __init__(self):
+        return
+
+    def accuse(self):
+        return
+
+    def play(self):
         return
