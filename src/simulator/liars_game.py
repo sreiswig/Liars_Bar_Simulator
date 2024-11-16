@@ -46,23 +46,36 @@ class LiarsGame():
     def __init__(self, players):
         self.deck = LiarsGameDeck()
         self.players = players
+        self.previous_player = None
         self.current_player = None
         self.table_face = None
-        self.create_new_round()
+        self.last_played = []
+        self.game_state = None
+        self.face_set = ("King", "Queen", "Jack", "Ace")
     
-    """
-    Creates a new round.
-    New Deal is made.
-    """
+
     def create_new_round(self):
         random_draw = self.deck.deal(len(self.players))
         for i in range(4):
             self.players[i] = random_draw[(i*5) : (i*5)+5]
-        self.current_player = random.sample(self.players, 1)
+        self.current_player = random.sample([0,1,2,3], 1)
+        self.table_face = random.sample(self.face_set, 1)
 
-    """
-    Turn during each turn a player plays their cards or accuses the previous player
-
-    """
-    def play(self):
+    def take_shot(self, player):
         return
+
+    def accuse(self):
+        return all(card.face == self.table_face for card in self.last_played)
+
+    def run(self):
+        self.create_new_round()
+        match self.players[self.current_player].play_cards(self.game_state):
+            case ("Accuse", []):
+                if self.accuse():
+                    self.take_shot(self.current_player)
+                else:
+                    self.take_shot(self.previous_player)
+            case ("Play", _):
+                return
+            case _:
+                return
