@@ -15,11 +15,9 @@
 from player import Player
 import random
 
-
 class Card():
     def __init__(self, face):
         self.face = face
-
 
 class LiarsGameDeck():
     def __init__(self):
@@ -62,7 +60,10 @@ class LiarsGame():
         self.table_face = random.sample(self.face_set, 1)
 
     def take_shot(self, player):
-        return
+        if random.randint(1, player.shots_remaining) == player.death_num:
+            player.is_dead = True
+        else:
+            player.shots_remaining = player.shots_remaining - 1
 
     def accuse(self):
         return all(card.face == self.table_face for card in self.last_played)
