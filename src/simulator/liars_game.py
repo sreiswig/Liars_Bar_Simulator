@@ -12,12 +12,12 @@
 # If a player has played all their cards they are skipped
 # If all cards have been played the last player must accuse the previous player
 
-from player import Player
 import random
 
 class Card():
     def __init__(self, face):
         self.face = face
+
 
 class LiarsGameDeck():
     def __init__(self):
@@ -59,14 +59,17 @@ class LiarsGame():
         self.current_player = random.sample([0,1,2,3], 1)
         self.table_face = random.sample(self.face_set, 1)
 
+
     def take_shot(self, player):
         if random.randint(1, player.shots_remaining) == player.death_num:
             player.is_dead = True
         else:
             player.shots_remaining = player.shots_remaining - 1
 
+
     def accuse(self):
         return all(card.face == self.table_face for card in self.last_played)
+
 
     def run(self):
         self.create_new_round()
