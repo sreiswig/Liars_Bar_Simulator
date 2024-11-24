@@ -1,24 +1,15 @@
-# There are 4 players at the beginning of the game
-# Each player is dealt 5 cards from a Deck of 6 Kings, 6 Queens, 6 Jacks, 6 Aces and 2 Jokers
-# A Table value is chosen from the set (King, Queen, Jack, Ace)
-# A player is chosen to go first
-# The player then picks between 1 - 3 cards to place on the table
-# The turn is passed to the next player (index + 1) % 4
-# The current player gets to accuse or play
-# If the player chooses to accuse then the last cards played are revealed
-# If the revealed cards are all the same as the table value then the current player rolls to see if they die
-# Else the accused player rolls to see if they die
-# Special Conditions:
-# If a player has played all their cards they are skipped
-# If all cards have been played the last player must accuse the previous player
-
 import random
 
+"""
+Simple card with a face value
+"""
 class Card():
     def __init__(self, face):
         self.face = face
 
-
+"""
+Liars game deck made of 6 King, Queen, Jack, Ace and 2 Jokers
+"""
 class LiarsGameDeck():
     def __init__(self):
         self.deck = []
@@ -51,7 +42,13 @@ class LiarsGame():
         self.game_state = None
         self.face_set = ("King", "Queen", "Jack", "Ace")
     
-
+    """
+    A table value is chosen from the faces (King, Queen, Jack, Ace)
+    Players must play 1 - 3 cards of the face value or play other face cards and lie
+    The next player either plays their 1 - 3 cards or accuses the previous player
+    If a player doesn't have cards they are skipped
+    A round ends when an accusation is made or all cards are played and the last player is forced to accuse
+    """
     def create_new_round(self):
         random_draw = self.deck.deal(len(self.players))
         for i in range(4):
@@ -59,18 +56,22 @@ class LiarsGame():
         self.current_player = random.sample([0,1,2,3], 1)
         self.table_face = random.sample(self.face_set, 1)
 
-
     def take_shot(self, player):
         if random.randint(1, player.shots_remaining) == player.death_num:
             player.is_dead = True
         else:
             player.shots_remaining = player.shots_remaining - 1
 
-
+    """
+    Returns true if all cards are the table face value or Joker, false otherwise 
+    """
     def accuse(self):
         return all(card.face == self.table_face for card in self.last_played)
 
-
+    """
+    Run a game of liars game
+    A game ends when only one player is left alive
+    """
     def run(self):
         self.create_new_round()
         match self.players[self.current_player].play_cards(self.game_state):
