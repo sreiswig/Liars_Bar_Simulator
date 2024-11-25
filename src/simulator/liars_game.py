@@ -41,13 +41,14 @@ class LiarsGame():
         self.last_played = []
         self.game_state = None
         self.face_set = ("King", "Queen", "Jack", "Ace")
-    
+   
+    def get_game_state(self):
+        game_state = {}
+        return game_state
+
     """
     A table value is chosen from the faces (King, Queen, Jack, Ace)
-    Players must play 1 - 3 cards of the face value or play other face cards and lie
-    The next player either plays their 1 - 3 cards or accuses the previous player
-    If a player doesn't have cards they are skipped
-    A round ends when an accusation is made or all cards are played and the last player is forced to accuse
+    Cards are dealt to the players
     """
     def create_new_round(self):
         random_draw = self.deck.deal(len(self.players))
@@ -70,17 +71,18 @@ class LiarsGame():
 
     """
     Run a game of liars game
+    A game is made of multiple rounds
     A game ends when only one player is left alive
     """
     def run(self):
-        self.create_new_round()
-        match self.players[self.current_player].play_cards(self.game_state):
-            case ("Accuse", []):
-                if self.accuse():
-                    self.take_shot(self.current_player)
-                else:
-                    self.take_shot(self.previous_player)
-            case ("Play", _):
-                return
-            case _:
-                return
+        while self.num_live_players > 1:
+            self.create_new_round()
+            self.run_round()
+
+    """
+    The first player plays 1 - 3 cards
+    The next player may play cards or accuse
+    A round ends on an accusation or when all players run out of cards then the last player is forced to make an accusation
+    """
+    def run_round(self):
+        return 
