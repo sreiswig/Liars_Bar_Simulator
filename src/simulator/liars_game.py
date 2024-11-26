@@ -36,7 +36,7 @@ class LiarsGame():
         self.deck = LiarsGameDeck()
         self.players = players
         self.previous_player = None
-        self.current_player = None
+        self.current_player = random.sample([0,1,2,3], 1)
         self.table_face = None
         self.last_played = []
         self.game_state = None
