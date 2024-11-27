@@ -34,6 +34,7 @@ class LiarsGame():
     """
     def __init__(self, players):
         self.deck = LiarsGameDeck()
+        self.num_live_players = 4
         self.players = players
         self.previous_player = None
         self.current_player = random.sample([0,1,2,3], 1)
