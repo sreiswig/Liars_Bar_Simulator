@@ -7,22 +7,34 @@ class Card():
     def __init__(self, face):
         self.face = face
 
+    def __repr__(self):
+        return f"Card({self.face})"
+
 """
 Liars game deck made of 6 King, Queen, Jack, Ace and 2 Jokers
 """
 class LiarsGameDeck():
-    def __init__(self):
-        self.deck = []
-        for i in range(6):
-            self.deck.append(Card("King"))
-            self.deck.append(Card("Queen"))
-            self.deck.append(Card("Jack"))
-            self.deck.append(Card("Ace"))
-            if i < 2:
-                self.deck.append(Card("Joker"))
+    FACE_CARDS = ["King", "Queen", "Jack", "Ace"]
+    JOKERS = 2
+    COPIES_PER_FACE = 6
 
-    def deal(self, num_players):
-        return random.sample(self.deck, num_players * 5)
+    def __init__(self):
+        self.cards = self._create_deck()
+
+    def _create_deck(self):
+        deck = []
+        for _ in range(self.COPIES_PER_FACE):
+            for face in self.FACE_CARDS:
+                deck.append(Card(face))
+        deck.extend(Card("Joker") for _ in range(self.JOKERS))
+        random.shuffle(deck)
+        return deck
+
+    def deal(self, num_players, hand_size):
+        if num_players * hand_size > len(self.cards):
+            raise ValueError("Not enough cards to deal")
+        hands = [self.cards[i * hand_size:(i + 1) * hand_size] for i in range(num_players)]
+        return hands
 
 
 class LiarsGame():
