@@ -13,3 +13,6 @@ def test_deck():
     assert face_counts["Jack"] == 6
     assert face_counts["Ace"] == 6
     assert face_counts["Joker"] == 2
+
+def test_game_setup():
+    return
