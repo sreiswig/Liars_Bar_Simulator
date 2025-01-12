@@ -64,11 +64,11 @@ class LiarsGame():
     Cards are dealt to the players
     """
     def create_new_round(self):
-        random_draw = self.deck.deal(len(self.players))
+        random_draw = self.deck.deal(len(self.players), 5)
         for i in range(4):
             self.players[i] = random_draw[(i*5) : (i*5)+5]
-        self.current_player = random.sample([0,1,2,3], 1)
-        self.table_face = random.sample(self.face_set, 1)
+        self.current_player = random.choice([0,1,2,3])
+        self.table_face = random.choice(self.face_set)
 
     def take_shot(self, player):
         if random.randint(1, player.shots_remaining) == player.death_num:
